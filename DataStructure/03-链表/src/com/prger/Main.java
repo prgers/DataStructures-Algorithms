@@ -3,7 +3,7 @@ package com.prger;
 public class Main {
 
     public static void main(String[] args) {
-        List<Integer> list = new LinkedList<>();
+        List<Integer> list = new SingleLinkedList<>();
         list.add(20);
         list.add(0, 10);
         list.add(30);
