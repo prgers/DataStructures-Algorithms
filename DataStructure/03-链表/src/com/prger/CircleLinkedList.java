@@ -1,6 +1,6 @@
 package com.prger;
 
-public class LinkedList<E> extends AbstractList<E> {
+public class CircleLinkedList<E> extends AbstractList<E> {
     private Node<E> first;
     private Node<E> last;
 
@@ -60,22 +60,24 @@ public class LinkedList<E> extends AbstractList<E> {
 
         if (index == size) {
             Node<E> oldLast = last;
-            last = new Node<>(oldLast, element, null);
-            if (oldLast == null) {
+            last = new Node<>(oldLast, element, first);
+            if (oldLast == null) { //这是链表添加的第一个元素
                 first = last;
+                first.next = first;
+                first.prev = first;
             }else {
                 oldLast.next = last;
+                first.prev = last;
             }
         }else {
             Node<E> next = node(index);
             Node<E> prev = next.prev;
             Node<E> current = new Node<>(prev, element, next);
             next.prev = current;
+            prev.next = current;
 
-            if (prev == null) {
+            if (next == first) {
                 first = current;
-            }else {
-                prev.next = current;
             }
         }
         size++;
@@ -87,19 +89,24 @@ public class LinkedList<E> extends AbstractList<E> {
         rangeCheck(index);
 
         Node<E> node = node(index);
-        Node<E> prev = node.prev;
-        Node<E> next = node.next;
 
-        if (prev == null) {
-            first = next;
+        if (size == 1) {
+            first = null;
+            last = null;
         }else {
-            prev.next = next;
-        }
-
-        if (next == null) {
-            last = prev;
-        }else {
+            Node<E> prev = node.prev;
+            Node<E> next = node.next;
             next.prev = prev;
+            prev.next = next;
+
+
+            if (node == first) {
+                first = next;
+            }
+
+            if (node == last) {
+                last = prev;
+            }
         }
 
         size--;

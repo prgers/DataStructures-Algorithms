@@ -1,7 +1,5 @@
 package com.prger;
 
-import java.util.WeakHashMap;
-
 public class SingleLinkedList<E> extends AbstractList<E> {
     private Node<E> first;
 

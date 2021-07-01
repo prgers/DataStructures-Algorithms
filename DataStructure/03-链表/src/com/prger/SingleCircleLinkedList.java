@@ -1,15 +1,15 @@
 package com.prger;
 
-public class LinkedList<E> extends AbstractList<E> {
+/**
+ * 单向循环链表
+ */
+public class SingleCircleLinkedList<E> extends AbstractList<E> {
     private Node<E> first;
-    private Node<E> last;
 
     private static class Node<E> {
         E element;
         Node<E> next;
-        Node<E> prev;
-        public Node(Node<E> prev, E element, Node<E> next) {
-            this.prev = prev;
+        public Node(E element, Node<E> next) {
             this.element = element;
             this.next = next;
         }
@@ -17,19 +17,7 @@ public class LinkedList<E> extends AbstractList<E> {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            if (prev == null) {
-                sb.append("null");
-            }else {
-                sb.append(prev.element);
-            }
-
-            sb.append("_").append(element).append("_");
-            if (next == null) {
-                sb.append("null");
-            }else {
-                sb.append(next.element);
-            }
-
+            sb.append(element).append("_").append(next.element);
             return sb.toString();
         }
     }
@@ -38,7 +26,6 @@ public class LinkedList<E> extends AbstractList<E> {
     public void clear() {
         size = 0;
         first = null;
-        last = null;
     }
 
     @Override
@@ -58,25 +45,16 @@ public class LinkedList<E> extends AbstractList<E> {
     public void add(int index, E element) {
         rangeCheckForAdd(index);
 
-        if (index == size) {
-            Node<E> oldLast = last;
-            last = new Node<>(oldLast, element, null);
-            if (oldLast == null) {
-                first = last;
-            }else {
-                oldLast.next = last;
-            }
-        }else {
-            Node<E> next = node(index);
-            Node<E> prev = next.prev;
-            Node<E> current = new Node<>(prev, element, next);
-            next.prev = current;
+        if (index == 0) {
+            Node<E> newFirst = new Node<>(element, first);
 
-            if (prev == null) {
-                first = current;
-            }else {
-                prev.next = current;
-            }
+            //拿到最后一个节点
+            Node<E> last = (size == 0) ? newFirst : node(size - 1);
+            last.next = newFirst;
+            first = newFirst;
+        }else {
+            Node<E> prev = node(index -1);
+            prev.next = new Node<>(element, prev.next);
         }
         size++;
         
@@ -85,21 +63,19 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public E remove(int index) {
         rangeCheck(index);
-
-        Node<E> node = node(index);
-        Node<E> prev = node.prev;
-        Node<E> next = node.next;
-
-        if (prev == null) {
-            first = next;
+        Node<E> node = first;
+        if (index == 0) {
+            if (size == 1) {
+                first = null;
+            }else {
+                Node<E> last = node(size - 1);
+                first = first.next;
+                last.next = first;
+            }
         }else {
-            prev.next = next;
-        }
-
-        if (next == null) {
-            last = prev;
-        }else {
-            next.prev = prev;
+            Node<E> prev = node(index - 1);
+            node = prev.next;
+            prev.next = node.next;
         }
 
         size--;
@@ -129,20 +105,11 @@ public class LinkedList<E> extends AbstractList<E> {
     //获取index位置的节点
     private Node<E> node(int index) {
         rangeCheck(index);
-
-        if (index < (size >> 1)) {
-            Node<E> node = first;
-            for (int i = 0; i < index; i++) {
-                node = node.next;
-            }
-            return node;
-        }else {
-            Node<E> node = last;
-            for (int i = size - 1; i > index; i--) {
-                node = node.prev;
-            }
-            return node;
+        Node<E> node = first;
+        for (int i = 0; i < index; i++) {
+            node = node.next;
         }
+        return node;
     }
 
     @Override
