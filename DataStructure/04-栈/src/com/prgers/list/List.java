@@ -1,4 +1,4 @@
-package com.prger;
+package com.prgers.list;
 
 public interface List<E> {
 

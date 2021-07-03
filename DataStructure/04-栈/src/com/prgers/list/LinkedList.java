@@ -1,4 +1,4 @@
-package com.prger;
+package com.prgers.list;
 
 public class LinkedList<E> extends AbstractList<E> {
     private Node<E> first;
