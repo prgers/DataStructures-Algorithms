@@ -29,8 +29,8 @@ public class Main {
     public static void main(String[] args) {
 
         testList(new LinkedList<>());
-//        testList(new SingleCircleLinkedList<>());
-//        testList(new CircleLinkedList<>());
+        testList(new SingleCircleLinkedList<>());
+        testList(new CircleLinkedList<>());
     }
 
 }
