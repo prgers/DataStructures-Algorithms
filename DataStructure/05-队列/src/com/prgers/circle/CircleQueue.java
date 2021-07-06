@@ -32,12 +32,18 @@ public class CircleQueue<E> {
         size = 0;
     }
 
+    /**
+     * 入队
+     */
     public void enQueue(E element) {
         ensureCapacity(size + 1);
         elements[index(size)] = element;
         size++;
     }
 
+    /**
+     * 出队
+     */
     public E deQueue() {
         E frontElement = elements[front];
         elements[front] = null;
