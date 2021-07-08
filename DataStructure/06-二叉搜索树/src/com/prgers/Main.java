@@ -20,5 +20,7 @@ public class Main {
         }
 
         BinaryTrees.println(tree);
+
+        System.out.println(tree.contains(11));
     }
 }

@@ -129,14 +129,34 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
      * 删除元素
      */
     public void remove(E element) {
-
+        elementNotNullCheck(element);
     }
 
     /**
      * 是否包含某元素
      */
     public boolean contains(E element) {
-        return false;
+        return node(element) != null;
+    }
+
+    /**
+     * 根据节点的值获取节点
+     */
+    private Node<E> node(E element) {
+        elementNotNullCheck(element);
+        Node<E> node = root;
+
+        while (node != null) {
+            int cmp = compare(element, node.element);
+            if (cmp > 0) {
+                node = node.right;
+            } else if (cmp < 0) {
+                node = node.left;
+            } else {
+                return node;
+            }
+        }
+        return node;
     }
 
     @Override
