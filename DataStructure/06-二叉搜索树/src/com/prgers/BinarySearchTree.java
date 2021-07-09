@@ -3,6 +3,9 @@ package com.prgers;
 import com.prgers.printer.BinaryTreeInfo;
 
 import java.util.Comparator;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  * @Author prgers
@@ -48,6 +51,9 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         return ((Comparable<E>)e1).compareTo(e2);
     }
 
+    /**
+     * 处理传入的值不能null
+     */
     private void elementNotNullCheck(E element) {
         if (element == null) {
             throw new IllegalArgumentException("element must not be null");
@@ -67,6 +73,10 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             this.element = element;
             this.parent = parent;
         }
+
+        public boolean isLeaf() {
+            return left == null && right == null;
+        }
     }
 
     /**
@@ -80,7 +90,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
      * 是否为空
      */
     public boolean isEmpty() {
-
         return size == 0;
     }
 
@@ -157,6 +166,113 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             }
         }
         return node;
+    }
+
+    /**
+     * 前序遍历
+     * 访问顺序
+     * 根节点, 前序遍历左子树,前序遍历右子树
+     */
+    public void preorderTraversal() {
+        preorderTraversal2(root);
+    }
+
+    //递归遍历
+    private void preorderTraversal(Node<E> node) {
+        if (node == null) return;
+        System.out.println(node.element);
+        preorderTraversal(node.left);
+        preorderTraversal(node.right);
+    }
+
+    //非递归遍历
+    private void preorderTraversal2(Node<E> node) {
+        if (node == null) return;
+        Stack<Node<E>> stack = new Stack<>();
+        while (node != null) {
+            System.out.println(node.element);
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            node = node.left;
+            if (node == null) {
+                if (stack.isEmpty()) return;
+                node = stack.pop();
+            }
+        }
+    }
+
+    /**
+     * 中序遍历
+     * 访问顺序
+     * 中序遍历左子树,根节点,中序遍历右子树
+     */
+
+    public void inorderTraversal() {
+        inorderTraversal2(root);
+    }
+
+    //递归遍历
+    private void inorderTraversal(Node<E> node) {
+        if (node == null) return;
+        inorderTraversal(node.left);
+        System.out.println(node.element);
+        inorderTraversal(node.right);
+    }
+
+    //非递归遍历
+    private void inorderTraversal2(Node<E> node) {
+        if (node == null) return;
+        Stack<Node<E>> stack = new Stack<>();
+        Deque<Integer> deque = new LinkedList<>();
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+            while (node == null) {
+                if (stack.isEmpty()) return;
+                node = stack.pop();
+                System.out.println(node.element);
+                node = node.right;
+            }
+        }
+    }
+
+    /**
+     * 后序遍历
+     * 后序遍历左子树,后序遍历右子树,根节点
+     */
+    public void postorderTraversal() {
+        postorderTraversal2(root);
+    }
+
+    //递归遍历
+    private void postorderTraversal(Node<E> node) {
+        if (node == null) return;
+        postorderTraversal(node.left);
+        postorderTraversal(node.right);
+        System.out.println(node.element);
+    }
+
+    //非递归遍历
+    private void postorderTraversal2(Node<E> node){
+        if (node == null) return;
+        Stack<Node<E>> stack = new Stack<>();
+        Node<E> prevNode = null;
+        while (!stack.isEmpty() || node != null) {
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            if (node.right == null || node.right == prevNode) {
+                System.out.println(node.element);
+                prevNode = node;
+                node = null;
+            }else {
+                stack.push(node);
+                node = node.right;
+            }
+        }
     }
 
     @Override

@@ -10,8 +10,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Integer data[] = new Integer[] {
-            7, 4, 9, 2, 5, 8, 11, 3, 12, 1
+        Integer[] data = new Integer[] {
+                7, 4, 9, 2, 5, 8, 11, 3, 12, 10, 1
+//                6, 4, 7, 2, 5, 1, 3
         };
 
         BinarySearchTree<Integer> tree = new BinarySearchTree<>();
@@ -21,6 +22,8 @@ public class Main {
 
         BinaryTrees.println(tree);
 
-        System.out.println(tree.contains(11));
+//        tree.preorderTraversal();
+//        tree.inorderTraversal();
+        tree.postorderTraversal();
     }
 }
