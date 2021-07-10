@@ -12,7 +12,6 @@ public class Main {
 
         Integer[] data = new Integer[] {
                 7, 4, 9, 2, 5, 8, 11, 3, 12, 10, 1
-//                6, 4, 7, 2, 5, 1, 3
         };
 
         BinarySearchTree<Integer> tree = new BinarySearchTree<>();
@@ -24,6 +23,11 @@ public class Main {
 
 //        tree.preorderTraversal();
 //        tree.inorderTraversal();
-        tree.postorderTraversal();
+//        tree.postorderTraversal();
+//        tree.levelOrderTraversal();
+//        System.out.println(tree.height());
+        System.out.println(tree.isComplete());
     }
+
+
 }

@@ -2,10 +2,7 @@ package com.prgers;
 
 import com.prgers.printer.BinaryTreeInfo;
 
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @Author prgers
@@ -76,6 +73,10 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
         public boolean isLeaf() {
             return left == null && right == null;
+        }
+
+        public boolean hasTwoChildren() {
+            return left != null && right != null;
         }
     }
 
@@ -273,6 +274,108 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
                 node = node.right;
             }
         }
+    }
+
+    /**
+     * 层序遍历
+     */
+    public void levelOrderTraversal() {
+        if (root == null) return;
+
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            Node<E> node = queue.poll();
+            System.out.println(node.element);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+    }
+
+    /**
+     * 获取树的高度
+     */
+    public int height() {
+        return height2(root);
+    }
+
+    //递归方式
+    private int height(Node<E> node) {
+        if (node == null) return 0;
+        return 1 + Math.max(height(node.left), height(node.right));
+    }
+
+    //非递归方式
+    private int height2(Node<E> node) {
+
+        //树的高度
+        int height = 0;
+
+        //每层节点的数量
+        int levelSize = 1;
+
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(node);
+
+        while (!queue.isEmpty()) {
+
+            Node<E> poll = queue.poll();
+
+            levelSize--;
+            if (poll.left != null) {
+                queue.offer(poll.left);
+            }
+
+            if (poll.right != null) {
+                queue.offer(poll.right);
+            }
+
+            if (levelSize == 0) {
+                height++;
+                levelSize = queue.size();
+            }
+        }
+
+
+        return height;
+    }
+
+    /**
+     * 判断二叉树是否为完全二叉树
+     */
+    public boolean isComplete() {
+        if (root == null) return false;
+
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        boolean leaf = false;
+        while (!queue.isEmpty()) {
+
+            Node<E> node = queue.poll();
+
+            if (leaf && !node.isLeaf()) return false;
+
+            if (node.left != null) {
+                queue.offer(node.left);
+            } else if (node.right != null) {
+                return false;
+            }
+
+            if (node.right != null) {
+                queue.offer(node.right);
+            }else {
+                leaf = true;
+            }
+
+        }
+
+
+        return true;
     }
 
     @Override
