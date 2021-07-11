@@ -373,9 +373,57 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             }
 
         }
-
-
         return true;
+    }
+
+    /**
+     * 获取某个节点的前驱节点
+     */
+    private Node<E> predecessor(Node<E> node) {
+        if (node == null) return null;
+
+        //如果前驱节点在节点的左子树种
+        Node<E> p = node.left;
+        if (p != null) {
+            while (p.right != null) {
+                p = p.right;
+            }
+            return p;
+        }
+
+        //从父节点中找
+        while (node.parent != null && node == node.parent.left) {
+            node = node.parent;
+        }
+
+        //node.parent = null
+        //node = node.parent.right
+        return node.parent;
+    }
+
+    /**
+     * 获取某个节点的后继节点
+     */
+    private Node<E> successor(Node<E> node) {
+        if (node == null) return null;
+
+        //如果前驱节点在节点的左子树种
+        Node<E> p = node.right;
+        if (p != null) {
+            while (p.left != null) {
+                p = p.left;
+            }
+            return p;
+        }
+
+        //从父节点中找
+        while (node.parent != null && node == node.parent.right) {
+            node = node.parent;
+        }
+
+        //node.parent = null
+        //node = node.parent.left
+        return node.parent;
     }
 
     @Override
@@ -397,5 +445,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     public Object string(Object node) {
         return ((Node<E>)node).element;
     }
+
 
 }
