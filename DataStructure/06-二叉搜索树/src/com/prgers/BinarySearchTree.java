@@ -140,6 +140,51 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
      */
     public void remove(E element) {
         elementNotNullCheck(element);
+
+        remove(node(element));
+    }
+
+    private void remove(Node<E> node) {
+
+        if (node == null) return;
+
+        size--;
+        //先删除度为2的节点
+        if (node.hasTwoChildren()) {
+
+            //找到前驱节点/后继节点
+            Node<E> p= predecessor(node);
+
+            //用前驱节点的值覆盖要删除节点的值
+            node.element = p.element;
+
+            //删除节点
+            node = p;
+        }
+
+        //删除node节点(node的度必然是1或者0)
+        Node<E> replacement = node.left != null ? node.left : node.right;
+
+        if (replacement != null) { //度为1
+
+            //更改parent
+            replacement.parent = node.parent;
+            if (node.parent == null) { //度为1且是根节点
+                root = replacement;
+            }else if (node == node.parent.left) {
+                node.parent.left = replacement;
+            }else {
+                node.parent.right = replacement;
+            }
+        } else if (node.parent == null) { //node是叶子节点且是根节点
+            root = null;
+        } else { //node是叶子节点,但不是根节点
+            if (node == node.parent.left) {
+                node.parent.left = null;
+            }else {
+                node.parent.right = null;
+            }
+        }
     }
 
     /**

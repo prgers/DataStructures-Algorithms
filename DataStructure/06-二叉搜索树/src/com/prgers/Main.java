@@ -26,7 +26,9 @@ public class Main {
 //        tree.postorderTraversal();
 //        tree.levelOrderTraversal();
 //        System.out.println(tree.height());
-        System.out.println(tree.isComplete());
+//        System.out.println(tree.isComplete());
+        tree.remove(4);
+        BinaryTrees.println(tree);
     }
 
 
