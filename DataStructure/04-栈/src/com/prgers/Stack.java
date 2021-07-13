@@ -34,7 +34,4 @@ public class Stack<E> {
     public E top() {
         return list.get(size() - 1);
     }
-
-
-
 }
